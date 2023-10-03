@@ -67,9 +67,13 @@ public class CashCardController {
             Principal principal
     ) {
         CashCard cashCard = cashCardRepository.findByIdAndOwner(requestedId, principal.getName());
-        CashCard updatedCashCard = new CashCard(cashCard.id(), cashCardUpdate.amount(), principal.getName());
-        cashCardRepository.save(updatedCashCard);
 
-        return ResponseEntity.noContent().build();
+        if (cashCard != null) {
+            CashCard updatedCashCard = new CashCard(cashCard.id(), cashCardUpdate.amount(), principal.getName());
+            cashCardRepository.save(updatedCashCard);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
